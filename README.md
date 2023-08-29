@@ -1,2 +1,2 @@
-# Example
-An example greeter plugin
+# Canvas
+Allows you to draw!

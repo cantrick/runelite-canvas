@@ -7,7 +7,7 @@ public class CanvasMainTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(CanvasMain.class);
+		ExternalPluginManager.loadBuiltin(CanvasPlugin.class);
 		RuneLite.main(args);
 	}
 }
