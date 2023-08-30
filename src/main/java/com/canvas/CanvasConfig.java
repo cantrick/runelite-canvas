@@ -51,7 +51,7 @@ public interface CanvasConfig extends Config
 	)
 	default Keybind drawKey()
 	{
-		return Keybind.CTRL;
+		return Keybind.NOT_SET;
 	}
 
 	@ConfigItem(

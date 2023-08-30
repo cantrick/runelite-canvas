@@ -57,22 +57,6 @@ public class CanvasPlugin extends Plugin
 
 
 	private final MouseAdapter mouseAdapter = new MouseAdapter() {
-//		@Override
-//		public MouseEvent mousePressed(MouseEvent e) {
-//			colorList.add(config.getColor());
-//			sizeList.add(config.getBrushSize());
-//			curve = new ArrayDeque<>();
-//			isDrawing = true;
-//			return e;
-//		}
-//
-//		@Override
-//		public MouseEvent mouseReleased(MouseEvent e) {
-//			isDrawing = false;
-//			temp = null;
-//			curveList.add(curve);
-//			return e;
-//		}
 
 		@Override
 		public MouseEvent mouseMoved(MouseEvent e) {
@@ -81,15 +65,37 @@ public class CanvasPlugin extends Plugin
 			}
 			return e;
 		}
-
-		@Override
-		public MouseEvent mouseDragged(MouseEvent e) {
-//			if(isDrawing) {
-//				updateMousePositions(new Point(e.getX(), e.getY()));
-//			}
-			return e;
-		}
 	};
+
+	private void initHotkeys() {
+		hotkeys[0] = new HotkeyListener(() -> config.drawKey()) {
+			@Override
+			public void hotkeyPressed() {
+				colorList.add(config.getColor());
+				sizeList.add(config.getBrushSize());
+				curve = new ArrayDeque<>();
+				isDrawing = true;
+			}
+
+			@Override
+			public void hotkeyReleased() {
+				isDrawing = false;
+				temp = null;
+				curveList.add(curve);
+				curve = null;
+			}
+		};
+		hotkeys[1] = new HotkeyListener(() -> config.undoKey()) {
+			@Override
+			public void hotkeyPressed() {
+				if(curveList.size() > 0 && colorList.size() > 0 && sizeList.size() > 0) {
+					curveList.remove(curveList.size() - 1);
+					colorList.remove(colorList.size() - 1);
+					sizeList.remove(sizeList.size() - 1);
+				}
+			}
+		};
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -105,7 +111,6 @@ public class CanvasPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		log.info("Example stopped!");
 		if (hotkeysEnabled) {
 			toggleHotkeys();
 		}
@@ -140,37 +145,6 @@ public class CanvasPlugin extends Plugin
 		temp = point;
 	}
 
-	public Deque<Curve> getTrail() {
-		return curve;
-	}
-
-	private void initHotkeys() {
-		hotkeys[0] = new HotkeyListener(() -> config.drawKey()) {
-			@Override
-			public void hotkeyPressed() {
-				log.info("DRAW PRESS");
-				colorList.add(config.getColor());
-				sizeList.add(config.getBrushSize());
-				curve = new ArrayDeque<>();
-				isDrawing = true;
-			}
-
-			@Override
-			public void hotkeyReleased() {
-				log.info("DRAW RELEASE");
-				isDrawing = false;
-				temp = null;
-				curveList.add(curve);
-			}
-		};
-		hotkeys[1] = new HotkeyListener(() -> config.undoKey()) {
-			@Override
-			public void hotkeyPressed() {
-
-			}
-		};
-	}
-
 	private void toggleHotkeys() {
 		for (HotkeyListener hotkey : hotkeys) {
 			if (hotkeysEnabled) {
@@ -182,17 +156,9 @@ public class CanvasPlugin extends Plugin
 		hotkeysEnabled = !hotkeysEnabled;
 	}
 
-//	@Subscribe
-//	public void onConfigChanged(ConfigChanged event) {
-//		if (OPTION_KEYS.contains(event.getKey())) {
-//			panel.update(state);
-//		}
-//
-//		if (event.getKey().equals(AUTO_HIDE_KEY)) {
-//			boolean atZul = REGION_IDS.contains(getRegionId());
-//			togglePanel(atZul || !config.autoHide(), false);
-//		}
-//	}
+	public Deque<Curve> getTrail() {
+		return curve;
+	}
 
 	@Provides
 	CanvasConfig provideConfig(ConfigManager configManager)
