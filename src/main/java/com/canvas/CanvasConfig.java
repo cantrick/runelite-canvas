@@ -3,6 +3,7 @@ package com.canvas;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 import java.awt.*;
 
@@ -40,5 +41,27 @@ public interface CanvasConfig extends Config
 	default int getBrushSize()
 	{
 		return 2;
+	}
+
+	@ConfigItem(
+			keyName = "drawKey",
+			name = "Bind draw key",
+			description = "Binds the draw key",
+			position = 3
+	)
+	default Keybind drawKey()
+	{
+		return Keybind.CTRL;
+	}
+
+	@ConfigItem(
+			keyName = "undoKey",
+			name = "Bind undo key",
+			description = "Binds the undo key",
+			position = 4
+	)
+	default Keybind undoKey()
+	{
+        return Keybind.NOT_SET;
 	}
 }
