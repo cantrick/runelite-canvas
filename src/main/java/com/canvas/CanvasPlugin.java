@@ -114,6 +114,11 @@ public class CanvasPlugin extends Plugin
 		if (hotkeysEnabled) {
 			toggleHotkeys();
 		}
+
+		overlayManager.remove(overlay);
+		curveList.clear();
+		colorList.clear();
+		sizeList.clear();
 	}
 
 	@Subscribe

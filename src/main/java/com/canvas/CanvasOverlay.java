@@ -36,7 +36,7 @@ public class CanvasOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics){
-        if (config.showOverlay() == false) {
+        if (!config.showOverlay()) {
             return null;
         }
 
@@ -144,9 +144,6 @@ public class CanvasOverlay extends Overlay {
                     } else if (j == 2 && midBefore != null) {
                         midAfter = points.get(j);
                     }
-
-                    int position = i * 5 + j;
-                    int size = trail.size() * 5;
 
                     if(previous != null && current != null) {
                         graphics.drawLine(previous.getX(), previous.getY(), current.getX(), current.getY());
